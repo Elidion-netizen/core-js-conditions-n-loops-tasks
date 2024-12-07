@@ -106,8 +106,28 @@ function isIsoscelesTriangle(a, b, c) {
  *  10  => X
  *  26  => XXVI
  */
-function convertToRomanNumerals(/* num */) {
-  throw new Error('Not implemented');
+function convertToRomanNumerals(num) {
+  let answ = '';
+  let tempNum = num;
+  while (tempNum > 0) {
+    if (tempNum >= 10) {
+      answ += 'X';
+      tempNum -= 10;
+    } else if (tempNum === 9) {
+      answ += 'IX';
+      tempNum -= 9;
+    } else if (tempNum >= 5) {
+      answ += 'V';
+      tempNum -= 5;
+    } else if (tempNum === 4) {
+      answ += 'IV';
+      tempNum -= 4;
+    } else {
+      answ += 'I';
+      tempNum -= 1;
+    }
+  }
+  return answ;
 }
 
 /**
@@ -125,8 +145,52 @@ function convertToRomanNumerals(/* num */) {
  *  '10,5'    => 'one zero point five'
  *  '1950.2'  => 'one nine five zero point two'
  */
-function convertNumberToString(/* numberStr */) {
-  throw new Error('Not implemented');
+function convertNumberToString(numberStr) {
+  let answ = '';
+  for (let i = 0; i < numberStr.length; i += 1) {
+    switch (numberStr[i]) {
+      case '0':
+        answ += 'zero';
+        break;
+      case '1':
+        answ += 'one';
+        break;
+      case '2':
+        answ += 'two';
+        break;
+      case '3':
+        answ += 'three';
+        break;
+      case '4':
+        answ += 'four';
+        break;
+      case '5':
+        answ += 'five';
+        break;
+      case '6':
+        answ += 'six';
+        break;
+      case '7':
+        answ += 'seven';
+        break;
+      case '8':
+        answ += 'eight';
+        break;
+      case '9':
+        answ += 'nine';
+        break;
+      case '-':
+        answ += 'minus';
+        break;
+      default:
+        answ += 'point';
+        break;
+    }
+    if (i !== numberStr.length - 1) {
+      answ += ' ';
+    }
+  }
+  return answ;
 }
 
 /**
@@ -141,8 +205,16 @@ function convertNumberToString(/* numberStr */) {
  *  '0123210'   => true
  *  'qweqwe'    => false
  */
-function isPalindrome(/* str */) {
-  throw new Error('Not implemented');
+function isPalindrome(str) {
+  const len = str.length;
+
+  for (let index = 0; index < Math.floor(len / 2); index += 1) {
+    if (str[index] !== str[len - 1 - index]) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 /**
@@ -282,8 +354,24 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortByAsc(arr) {
+  if (arr.length < 2) return arr;
+  const res = arr;
+  const pivot = arr[0];
+  const left = [];
+  const right = [];
+  for (let i = 1; i < arr.length; i += 1) {
+    if (arr[i] < pivot) {
+      left[left.length] = arr[i];
+    } else {
+      right[right.length] = arr[i];
+    }
+  }
+  const answ = [...sortByAsc(left), pivot, ...sortByAsc(right)];
+  for (let i = 0; i < answ.length; i += 1) {
+    res[i] = answ[i];
+  }
+  return res;
 }
 
 /**
@@ -303,8 +391,27 @@ function sortByAsc(/* arr */) {
  *  '012345', 3 => '024135' => '043215' => '031425'
  *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  */
-function shuffleChar(/* str, iterations */) {
-  throw new Error('Not implemented');
+function shuffleChar(str, iterations) {
+  let answ = str;
+  let count = iterations;
+  while (count) {
+    let newOddString = '';
+    let newEvenString = '';
+
+    for (let i = 0; i < str.length; i += 1) {
+      if (i % 2 === 0) {
+        newEvenString += answ[i];
+      } else {
+        newOddString += answ[i];
+      }
+    }
+    answ = newEvenString + newOddString;
+    count -= 1;
+    if (answ === str) {
+      count %= iterations - count;
+    }
+  }
+  return answ;
 }
 
 /**
@@ -324,8 +431,24 @@ function shuffleChar(/* str, iterations */) {
  * @param {number} number The source number
  * @returns {number} The nearest larger number, or original number if none exists.
  */
-function getNearestBigger(/* number */) {
-  throw new Error('Not implemented');
+function getNearestBigger(number) {
+  const numArr = Array.from(String(number), Number);
+
+  for (let i = numArr.length - 2; i >= 0; i -= 1) {
+    if (numArr[i] < numArr[i + 1]) {
+      for (let j = numArr.length - 1; j > i; j -= 1) {
+        if (numArr[j] > numArr[i]) {
+          [numArr[i], numArr[j]] = [numArr[j], numArr[i]];
+          const tail = numArr.splice(i + 1);
+          tail.sort((a, b) => a - b);
+          numArr.push(...tail);
+          return +numArr.join('');
+        }
+      }
+    }
+  }
+
+  return -1;
 }
 
 module.exports = {
